@@ -100,15 +100,13 @@ func extractTags(tags map[string]string, discovered, metricsURL string) map[stri
 }
 
 func httpClient(metricsURL string, cfg httputil.ClientConfig) (*http.Client, error) {
-	if strings.Contains(metricsURL, "kubernetes.default.svc.cluster.local") {
-		if cfg.TLSConfig.CAFile == "" {
-			log.Debugf("using default client for kubernetes api service")
-			cfg.TLSConfig.CAFile = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-			cfg.TLSConfig.InsecureSkipVerify = true
-		}
-		if cfg.BearerToken == "" && cfg.BearerTokenFile == "" {
-			cfg.BearerTokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-		}
+	if cfg.TLSConfig.CAFile == "" {
+		log.Debugf("using default client for kubernetes api service")
+		cfg.TLSConfig.CAFile = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+		cfg.TLSConfig.InsecureSkipVerify = true
+	}
+	if cfg.BearerToken == "" && cfg.BearerTokenFile == "" {
+		cfg.BearerTokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 	}
 	client, err := httputil.NewClient(cfg)
 	if err == nil {
