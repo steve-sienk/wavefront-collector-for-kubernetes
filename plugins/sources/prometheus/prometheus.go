@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/wavefronthq/wavefront-collector-for-kubernetes/internal/configuration"
